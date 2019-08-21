@@ -47,8 +47,7 @@ export default class Result extends React.Component{
 
         
         this.setState({
-            loading   : true,
-           
+            loading   : true,           
         });
         
         let end_point = `${this.props.data.issue_comment_url.replace('{/number}', '')}?sort=created&direction=desc&page=${this.state.page}`;
@@ -62,7 +61,7 @@ export default class Result extends React.Component{
             if( github_response.status == 200 ){
                 this.setState({
                     max_pages : Math.ceil( this.props.data.open_issues_count ) / 30,                     
-                    total_count : this.props.open_issues_count,
+                    total_count : this.props.data.open_issues_count,
                     comments : github_response.data
                 });
             }
@@ -76,9 +75,6 @@ export default class Result extends React.Component{
 
     handleShow( item ){
         if( item.issue_comment_url ){
-            console.log( item );
-            console.log( item.issue_comment_url );
-
             this.setState({
                 show_modal : true,
             }, () => {
@@ -133,32 +129,29 @@ export default class Result extends React.Component{
                             <Col>
 
                                 { this.state.loading && 
-                                    <div>
-                                        <strong>Espere por favor...</strong>
-                                    </div>
+                                    <strong>Espere por favor...</strong>
+                                }
+
+                                { !this.state.loading && this.state.comments.length == 0 && 
+                                    <strong>No se han encontrado comentarios</strong>
                                 }
 
                                 {this.state.comments.map( (item, index) => (
                                     <Card key={index} style={{ marginTop: index ? 20 : 0 }}>
                                         <Card.Body>
-                                            <Card.Text>
-                                                <p style={{fontSize:14}}>
-                                                    <strong>{item.user.login}</strong> / <span style={{fontSize:12}}>{moment(item.created_at).format('DD-MM-YYYY')}</span>
-                                                </p>
-                                                <p style={{fontSize:12}}>
-                                                    {item.body}
-                                                </p>
+                                            <Card.Text style={{fontSize:14}}>
+                                                <strong>{item.user.login}</strong> - <span style={{fontSize:12}}>{moment(item.created_at).format('DD-MM-YYYY')}</span>
+                                            </Card.Text>
+                                            <Card.Text style={{fontSize: 12}}>
+                                                {item.body}
                                             </Card.Text>
                                         </Card.Body>
-                                        {/* <footer className="blockquote-footer">
-                                            
-                                        </footer> */}
                                     </Card>
                                 ))}
                             </Col>
                         </Row>
 
-                        {this.state.total_count > 0 && 
+                        {this.state.comments.length > 0 && 
                             <Row style={{marginTop:20, float:'center'}}>
                                 <Col>
                                     <ReactPaginate

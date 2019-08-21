@@ -1,5 +1,5 @@
 import React from 'react';
-import { Row, Col, Button, Form, Badge, Card } from 'react-bootstrap';
+import { Row, Col, Button, Form, Card } from 'react-bootstrap';
 import axios from 'axios';
 import '../App.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -13,8 +13,7 @@ import constants from '../assets/constants';
 export default class searchForm extends React.Component{
     
     state = {
-        api_rest : 'http://127.0.0.1:8000/api',
-        term : 'react',
+        term : '',
         results : [],
         loading : false,
         language : undefined,
@@ -55,8 +54,6 @@ export default class searchForm extends React.Component{
                 end_point += `&page=${this.state.page}`;
             }
 
-            // console.log( end_point );
-
             // guardar la busqueda en el api
             axios.post(`${constants.apirest_url}/busqueda`, { texto : this.state.term }).then( api_response => {
 
@@ -70,10 +67,9 @@ export default class searchForm extends React.Component{
                         this.setState({
                             results     : github_response.data.items,
                             total_count : github_response.data.total_count,
+                        }, () => {
+                            this.updateSearch();
                         });
-
-                        console.log( github_response.data.items )
-                        // return 
                     }
                 });
             }).catch( error => {
@@ -111,7 +107,6 @@ export default class searchForm extends React.Component{
     }
 
     deleteSearch( searchId ){
-        // console.log( searchId );
         axios.delete(`${constants.apirest_url}/busqueda/${searchId}`).then( api_response => {
             if( api_response.status == 200 ){
                 this.updateSearch();
@@ -144,7 +139,6 @@ export default class searchForm extends React.Component{
                             <Card.Header>Busquedas recientes</Card.Header>
                             <Card.Body >
                                 {this.state.searches.map( (item, index) => (
-                                    // <span key={index}>{1}</span>
                                     <Row key={index} className="search" onClick={() => this.deleteSearch(item.id)}>
                                         <Col lg="12" md="12" sm="12">
                                             {item.texto} <span style={{float:'right'}}>x</span>
