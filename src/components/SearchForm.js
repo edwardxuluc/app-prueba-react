@@ -108,7 +108,7 @@ export default class searchForm extends React.Component{
 
     deleteSearch( searchId ){
         axios.delete(`${constants.apirest_url}/busqueda/${searchId}`).then( api_response => {
-            if( api_response.status == 200 ){
+            if( api_response.status === 200 ){
                 this.updateSearch();
             }
         }).catch( error => {
@@ -118,7 +118,7 @@ export default class searchForm extends React.Component{
 
     updateSearch(){
          axios.get(`${constants.apirest_url}/busqueda`).then( api_response => {
-            if( api_response.status == 200 ){
+            if( api_response.status === 200 ){
                 this.setState({
                     searches : api_response.data.data
                 });

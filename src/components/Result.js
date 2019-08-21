@@ -58,7 +58,7 @@ export default class Result extends React.Component{
                 loading : false
             });
 
-            if( github_response.status == 200 ){
+            if( github_response.status === 200 ){
                 this.setState({
                     max_pages : Math.ceil( this.props.data.open_issues_count ) / 30,                     
                     total_count : this.props.data.open_issues_count,
@@ -98,19 +98,19 @@ export default class Result extends React.Component{
                         <Image src={item.owner.avatar_url} fluid />
                     </Col>
                     <Col lg="10" md="10" sm="10">
-                        <Row>
+                        <Row style={{fontSize:14}}>
                             <Col lg="8" md="8" sm="8">
-                                <a href="#" style={{fontSize:20, color:'blue', fontWeight:'bold'}} onClick={this.handleShow}>{item.full_name}</a>
+                                <a href="#" style={{fontSize:16, color:'blue', fontWeight:'bold'}} onClick={this.handleShow}>{item.full_name}</a>
                                 <p>{item.description}</p>
                             </Col>
                             <Col lg="2" md="2" sm="2">
-                            <FontAwesomeIcon icon={faCircle}/> {item.language}
+                                <FontAwesomeIcon icon={faCircle}/> {item.language}
                             </Col>
                             <Col lg="2" md="2" sm="2">
                                 <FontAwesomeIcon icon={faStar}/> {this.kNumber(item.stargazers_count)}K
                             </Col>
                         </Row>
-                        <Row>
+                        <Row style={{fontSize:14}}>
                             <Col>{item.license ? item.license.name : 'Licencia no especificada'}</Col>
                             <Col>{this.lastUpdate(item.pushed_at)}</Col>
                             <Col><FontAwesomeIcon icon={faEye}/> {this.kNumber(item.forks)}K</Col>
@@ -132,7 +132,7 @@ export default class Result extends React.Component{
                                     <strong>Espere por favor...</strong>
                                 }
 
-                                { !this.state.loading && this.state.comments.length == 0 && 
+                                { !this.state.loading && this.state.comments.length === 0 && 
                                     <strong>No se han encontrado comentarios</strong>
                                 }
 
