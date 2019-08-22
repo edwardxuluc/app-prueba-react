@@ -19,6 +19,7 @@ export default class Result extends React.Component{
         super(props);
         this.handleClose = this.handleClose.bind(this);
         this.handleShow = this.handleShow.bind(this);
+        this.changePage = this.changePage.bind(this);
     }
 
     kNumber( number ){
@@ -43,11 +44,9 @@ export default class Result extends React.Component{
 
     search(){
         
-        console.log( this.props.data )
-
-        
         this.setState({
-            loading   : true,           
+            loading   : true,
+            comments  : [],
         });
         
         let end_point = `${this.props.data.issue_comment_url.replace('{/number}', '')}?sort=created&direction=desc&page=${this.state.page}`;
@@ -85,6 +84,14 @@ export default class Result extends React.Component{
 
     handleClose(){
         this.setState({ show_modal : false });
+    }
+
+    changePage( newPage ){
+        this.setState({
+            page : newPage.selected + 1
+        }, () =>{
+            this.search();
+        });
     }
 
     render(){
@@ -172,6 +179,7 @@ export default class Result extends React.Component{
                                         breakClassName={'page-item'}
                                         breakLinkClassName={'page-link'}
                                         activeClassName={'active'}
+                                        forcePage={this.state.page - 1}
                                     />
                                 </Col>
                             </Row>

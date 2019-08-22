@@ -212,6 +212,7 @@ export default class searchForm extends React.Component{
                                         breakClassName={'page-item'}
                                         breakLinkClassName={'page-link'}
                                         activeClassName={'active'}
+                                        forcePage={this.state.page - 1}
                                     />
                                 </Col>
                             </Row>
